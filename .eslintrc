@@ -1,0 +1,45 @@
+{
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "quotes": [
+      "warn",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
+    "semi": [
+      "warn",
+      "always"
+    ],
+    "no-useless-escape": "off",
+    "no-prototype-builtins": "off",
+    "require-atomic-updates": "off",
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "@typescript-eslint/prefer-namespace-keyword": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "prettier/prettier": "warn"
+  }
+}
