@@ -5,7 +5,9 @@ WORKDIR /app
 RUN apt update \
   && apt install curl unzip -y
 
-RUN curl https://bun.sh/install | bash
+# install bun at a given version
+ARG VERSION=0.6.3
+RUN curl https://bun.sh/install | bash -s bun-v${VERSION}
 
 COPY package.json .
 COPY bun.lockb .
