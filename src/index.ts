@@ -6,7 +6,7 @@ const app = new Elysia();
 
 app.use(userRoutes);
 
-app.listen(8080);
+app.listen(process.env.PORT || 8080);
 
 logger.info(
   '🦊 Elysia is running at %s:%d',
