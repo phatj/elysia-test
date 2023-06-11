@@ -1,6 +1,8 @@
 {
-  "name": "bun-template",
+  "name": "elysia-test",
   "scripts": {
+    "ci:prepare": "docker build . -t fws/elysia-test",
+    "ci:run": "source .env; docker run --rm --name elysia-test -p $PORT:8080 fws/elysia-test",
     "watch": "bun run --hot src/index.ts",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
     "start": "bun src/index.ts",

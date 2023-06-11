@@ -6,8 +6,8 @@ RUN apt update \
   && apt install curl unzip -y
 
 # install bun at a given version
-ARG VERSION=0.6.3
-RUN curl https://bun.sh/install | bash -s bun-v${VERSION}
+ARG VERSION=0.6.8
+RUN curl -s https://bun.sh/install | bash -s bun-v${VERSION}
 
 COPY package.json .
 COPY bun.lockb .
@@ -29,4 +29,4 @@ COPY tsconfig.json .
 ENV ENV production
 CMD ["./bun", "src/index.ts"]
 
-EXPOSE 3000
+EXPOSE 8080
