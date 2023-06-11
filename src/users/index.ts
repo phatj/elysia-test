@@ -1,5 +1,5 @@
-import { Elysia, ElysiaInstance } from 'elysia';
-import { createHash } from 'node:crypto';
+import { password as passwordHash } from 'bun';
+import { Elysia, ElysiaInstance, NotFoundError } from 'elysia';
 import { db } from '~/_common';
 import { User } from './types';
 
@@ -9,17 +9,25 @@ let userIndex = 1;
 export const userRoutes = (app: Elysia<ElysiaInstance>) =>
   app.group('/users', (app) =>
     app
-      .get('/', () => {
+      .get('', () => {
         return db.users;
       })
-      .get('/:id', ({ params }) => {
-        return db.users.find((user) => user.id === Number(params.id));
+      .get('/:id', ({ set, params }) => {
+        const user = db.users.find((user) => user.id === Number(params.id));
+
+        if (!user) {
+          set.status = 404;
+          return {
+            msg: `No record found for ${params.id}`,
+          };
+        }
+
+        return user;
       })
       .post(
-        '/',
-        ({ body: { password: rawPassword, ...other } }) => {
-          const hash = createHash('sha256');
-          const password = hash.update(rawPassword).digest('hex');
+        '',
+        async ({ body: { password: rawPassword, ...other } }) => {
+          const password = await passwordHash.hash(rawPassword);
 
           const user: User = {
             id: userIndex++,
@@ -34,13 +42,15 @@ export const userRoutes = (app: Elysia<ElysiaInstance>) =>
           return user;
         },
         {
-          schema: {
-            body: User,
-          },
+          body: User,
         }
       )
       .patch('/:id', ({ body, params }) => {
         const user = db.users.find((user) => user.id === Number(params.id));
+        if (!user) {
+          throw new NotFoundError();
+        }
+
         Object.assign(user, body);
 
         return user;
